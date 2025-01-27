@@ -195,7 +195,7 @@ class CreateBlog(APIView):
             return Response({"message":"User not found"}, status=status.HTTP_400_BAD_REQUEST)
             
         images_data = []
-        for i in range(len(request.data)//4):
+        for i in range(len(request.data)//6):
             image_data = {
                 'user':user.id,
                 'image': request.data.get(f'{i}[file]'),
@@ -204,23 +204,22 @@ class CreateBlog(APIView):
             }
             images_data.append(image_data)
 
-        if images_data:
-            
+        if not images_data:
+            return Response({"message":"No Images Provided."}, status=status.HTTP_400_BAD_REQUEST)
         
-            max_order = ImageModel.objects.aggregate(Max('order'))['order__max']
-            current_order = (max_order + 1) if max_order is not None else 1
-            created_images = []
+        max_order = ImageModel.objects.aggregate(Max('order'))['order__max']
+        current_order = (max_order + 1) if max_order is not None else 1
+        created_images = []
         
-            for image_data in images_data:
-                image_data['order'] = current_order
-                current_order +=1
-                serializer = BlogImageSerializer(data=image_data)
-                if serializer.is_valid():
-                    serializer.save()
-                    created_images.append(serializer.data)
-                else:
-                    return Response(
-                        {"message": "Error with one of the images"},status=status.HTTP_400_BAD_REQUEST)
+        for image_data in images_data:
+            image_data['order'] = current_order
+            current_order +=1
+            serializer = BlogImageSerializer(data=image_data)
+            if serializer.is_valid():
+                serializer.save()
+                created_images.append(serializer.data)
+            else:
+                return Response({"message": "Error with one of the images"},status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Images uploaded successfully"},status=status.HTTP_201_CREATED)
     
     
