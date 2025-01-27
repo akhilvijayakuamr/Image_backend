@@ -13,7 +13,7 @@ def send_otp_mail(email):
 
     subject = "Image Master: Confirm Your Registration"
 
-    frontend_url = f"http://localhost:5173/verify?email={email}&otp={otp}"
+    frontend_url = f"https://image-frontend-five.vercel.app/verify?email={email}&otp={otp}"
 
     message = f"""
     <html>
@@ -70,7 +70,7 @@ def send_otp_reset(email):
 
     subject = "Image Master: Confirm Your Reset Password"
 
-    frontend_url = f"http://localhost:5173/reset?email={email}&otp={otp}"
+    frontend_url = f"https://image-frontend-five.vercel.app/reset?email={email}&otp={otp}"
 
     message = f"""
     <html>
