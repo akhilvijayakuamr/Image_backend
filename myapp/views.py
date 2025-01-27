@@ -179,7 +179,7 @@ class ResetPassword(APIView):
         
         
         
-# Create Blog api
+# Create Blog view
         
 class CreateBlog(APIView):
     
