@@ -10,6 +10,7 @@ from django.db.models import Max
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .auth import get_user_from_token
+from rest_framework.permissions import AllowAny
 
 
 # Create your views here.
@@ -19,6 +20,8 @@ from .auth import get_user_from_token
 # Register View
 
 class UserRegister(APIView):
+    
+    permission_classes = [AllowAny]
     
     def post(self, request):
         
@@ -67,8 +70,10 @@ class UserRegister(APIView):
 
 class UserVerify(APIView):
     
+    permission_classes = [AllowAny]
+    
     def post(self, request):
-        
+        print("its working")
         email = request.data.get("email")
         otp = request.data.get("otp")
         
@@ -95,9 +100,12 @@ class UserVerify(APIView):
 
 class UserLogin(TokenObtainPairView):
     
+    permission_classes = [AllowAny]
+    
     serializer_class = CustomTokenObtainPairSerializer
     
     def post(self, request, *args, **kwargs):
+        
         
         try:
             response = super().post(request, *args, **kwargs)
