@@ -195,6 +195,7 @@ class CreateBlog(APIView):
             return Response({"message":"User not found"}, status=status.HTTP_400_BAD_REQUEST)
             
         images_data = []
+        print("The datas", request.data)
         for i in range(len(request.data)//6):
             image_data = {
                 'user':user.id,
